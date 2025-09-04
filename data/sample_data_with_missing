@@ -1,0 +1,7 @@
+ID,Name,Age,City,Salary
+1,Alice,25.0,New York,50000.0
+2,,30.0,Los Angeles,
+3,Charlie,,,55000.0
+4,David,35.0,Houston,70000.0
+5,Eve,40.0,Phoenix,80000.0
+6,Frank,22.0,Philadelphia,

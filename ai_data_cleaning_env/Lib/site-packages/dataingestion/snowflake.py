@@ -1,0 +1,49 @@
+import logging
+import snowflake.connector
+
+
+logging.basicConfig(format='%(asctime)s %(levelname)-4s %(message)s', level=logging.INFO, datefmt='%Y-%m-%d %H:%M:%S')
+
+
+class SNOWClient(object):
+    """
+    A SNOW client for making basic select and Insert according to the requirements.
+    """
+
+    def __init__(self,
+                 user='default',
+                 password='default',
+                 account='default',
+                 warehouse='default',
+                 database='default',
+                 schema='default'):
+
+        self.user = user
+        self.password = password
+        self.account = account
+        self.warehouse = warehouse
+        self.database = database
+        self.schema = schema
+
+    def read_data_from_snowflake(self, query):
+        logging.info('Snowflake: Fetching data from database.')
+        logging.info('Snowflake: Query to execute {}'.format(query))
+        with snowflake.connector.connect(user=self.user, password=self.password, account=self.account,
+                                         warehouse=self.warehouse, database=self.database,
+                                         schema=self.schema).cursor() as cursor:
+            cursor.execute(query)
+            for row in cursor.fetchall():
+                output = row[0]
+        logging.info('Snowflake: Finished fetching data from database.')
+        return output
+
+    def write_data_to_snowflake(self, data):
+        logging.info('Snowflake: Writing data from database.')
+        query = "insert into eet (name, role, salary) values {};".format(data)
+        logging.info('Snowflake: Query to execute {}'.format(query))
+        with snowflake.connector.connect(user=self.user, password=self.password, account=self.account,
+                                         warehouse=self.warehouse, database=self.database,
+                                         schema=self.schema).cursor() as cursor:
+            cursor.execute(query)
+        logging.info('Snowflake: Finished writing data from database.')
+        return
